@@ -15,6 +15,7 @@
     <modules>
         <module>serialization</module>
         <module>collector</module>
+        <module>data-generator</module>
     </modules>
 
 </project>
