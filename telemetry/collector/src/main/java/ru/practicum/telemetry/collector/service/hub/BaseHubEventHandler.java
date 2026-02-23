@@ -21,7 +21,7 @@ public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implemen
 
     @Override
     public void handle(HubEventProto event) {
-        if (!event.getParserForType().equals(getMessageType())) {
+        if (!event.getPayloadCase().equals(getMessageType())) {
             throw new IllegalArgumentException("Неизвестный тип события: " + event.getPayloadCase());
         }
 
