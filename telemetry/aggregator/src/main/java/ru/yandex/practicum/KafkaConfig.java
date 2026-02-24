@@ -18,10 +18,10 @@ import java.util.Properties;
 
 @Configuration
 public class KafkaConfig {
-    @Value("${kafka.bootstrap-servers")
+    @Value("${kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-    @Value("${kafka.group-id")
+    @Value("${kafka.group-id}")
     private String consumerGroupId;
 
     @Bean
