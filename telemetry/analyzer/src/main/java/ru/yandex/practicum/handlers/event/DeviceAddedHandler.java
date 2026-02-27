@@ -19,6 +19,11 @@ public class DeviceAddedHandler implements HubEventHandler {
     @Transactional
     public void handle(HubEventAvro event) {
         log.info("Сохраняем новое устройство для хаба с id = {}", event.getHubId());
+        DeviceAddedEventAvro addedEvent = (DeviceAddedEventAvro) event.getPayload();
+        if (repository.findByIdAndHubId(addedEvent.getId(), event.getHubId()).isPresent()) {
+            log.info("Устройство с id = {} уже существует для хаба {}, пропускаем", addedEvent.getId(), event.getHubId());
+            return;
+        }
         repository.save(mapToSensor(event));
     }
 

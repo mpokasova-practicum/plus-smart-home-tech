@@ -47,11 +47,11 @@ public class ScenarioAddedHandler implements HubEventHandler {
             }
         } else {
             Scenario scenario = scenarioOpt.get();
-
+            conditionRepository.deleteByScenario(scenario);
+            actionRepository.deleteByScenario(scenario);
             if (checkSensorsInScenarioConditions(scenarioAddedEvent, event.getHubId())) {
                 conditionRepository.saveAll(mapToCondition(scenarioAddedEvent, scenario));
             }
-
             if (checkSensorsInScenarioActions(scenarioAddedEvent, event.getHubId())) {
                 actionRepository.saveAll(mapToAction(scenarioAddedEvent, scenario));
             }
