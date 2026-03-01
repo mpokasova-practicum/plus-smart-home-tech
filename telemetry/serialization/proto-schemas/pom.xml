@@ -45,6 +45,7 @@
 
                 <configuration>
                     <protocVersion>${protobuf.version}</protocVersion>
+<!--                    <protoc>file://O>-->
 
                     <binaryMavenPlugins>
                         <binaryMavenPlugin>
