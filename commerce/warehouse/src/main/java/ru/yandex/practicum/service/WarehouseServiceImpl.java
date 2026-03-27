@@ -7,7 +7,6 @@ import ru.yandex.practicum.api.ShoppingStoreOperations;
 import ru.yandex.practicum.dto.shoppingCart.ShoppingCartDto;
 import ru.yandex.practicum.dto.shoppingStore.ProductDto;
 import ru.yandex.practicum.dto.shoppingStore.QuantityState;
-import ru.yandex.practicum.dto.shoppingStore.SetProductQuantityStateRequest;
 import ru.yandex.practicum.dto.warehouse.AddProductToWarehouseRequest;
 import ru.yandex.practicum.dto.warehouse.AddressDto;
 import ru.yandex.practicum.dto.warehouse.BookedProductsDto;
@@ -88,8 +87,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
         ProductDto productDto = shoppingStoreClient.getProduct(product.getProductId());
         QuantityState quantityState = QuantityState.fromQuantity(newQuantity);
-        SetProductQuantityStateRequest setProductQuantityStateRequest = new SetProductQuantityStateRequest(product.getProductId(), quantityState);
-        shoppingStoreClient.setProductQuantityState(setProductQuantityStateRequest);
+        shoppingStoreClient.setProductQuantityState(product.getProductId(), quantityState);
     }
 
     @Override

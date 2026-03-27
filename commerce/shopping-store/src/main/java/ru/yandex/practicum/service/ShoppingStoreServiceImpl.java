@@ -6,10 +6,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.yandex.practicum.dto.shoppingStore.ProductCategory;
-import ru.yandex.practicum.dto.shoppingStore.ProductDto;
-import ru.yandex.practicum.dto.shoppingStore.ProductState;
-import ru.yandex.practicum.dto.shoppingStore.SetProductQuantityStateRequest;
+import ru.yandex.practicum.dto.shoppingStore.*;
 import ru.yandex.practicum.exception.ProductNotFoundException;
 import ru.yandex.practicum.mapper.ProductMapper;
 import ru.yandex.practicum.model.Product;
@@ -66,10 +63,10 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     }
 
     @Override
-    public boolean setProductQuantityState(SetProductQuantityStateRequest request) {
-        Product product = productRepository.findById(request.getProductId())
+    public boolean setProductQuantityState(UUID productId, QuantityState quantityState) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Продукт с данным id не найден"));
-        product.setQuantityState(request.getQuantityState());
+        product.setQuantityState(quantityState);
         productRepository.save(product);
         return true;
     }
