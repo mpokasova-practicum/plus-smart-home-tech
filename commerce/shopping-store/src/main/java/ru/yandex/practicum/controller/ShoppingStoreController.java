@@ -40,8 +40,8 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
 
     @Override
     public boolean setProductQuantityState(
-            UUID productId,
-            QuantityState quantityState) {
+            @RequestParam UUID productId,
+            @RequestParam QuantityState quantityState) {
         return shoppingStoreService.setProductQuantityState(productId, quantityState);
     }
 
