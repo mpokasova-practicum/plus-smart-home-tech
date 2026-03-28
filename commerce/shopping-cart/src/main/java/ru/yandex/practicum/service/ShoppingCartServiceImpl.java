@@ -44,6 +44,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         cart.setProducts(oldProducts);
 
         BookedProductsDto bookedProductsDto = warehouseOperations.checkProductQuantity(cartMapper.toCartDto(cart));
+
         cartRepository.save(cart);
         return cartMapper.toCartDto(cart);
     }
@@ -69,7 +70,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             if (oldProducts.containsKey(removeId)) {
                 oldProducts.remove(removeId);
             } else {
-                throw new NoProductsInShoppingCartException("Продукта с данным id нет в корзине");
+                throw new NoProductsInShoppingCartException("Такого продукта нет в корзине");
             }
         }
         cart.setProducts(oldProducts);
@@ -113,7 +114,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     private void checkCartIsActive(ShoppingCart cart) {
-        if(!cart.getActive()) {
+        if (!cart.getActive()) {
             throw new DeactivateCartException("Корзина пользователя " + cart.getUsername() + " не активна");
         }
     }

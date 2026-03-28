@@ -15,7 +15,7 @@ import java.util.UUID;
 @FeignClient(name = "shopping-store", path = "/api/v1/shopping-store")
 public interface ShoppingStoreOperations {
     @GetMapping
-    Page<ProductDto> getProducts(@RequestParam(name = "category", required = true) ProductCategory category,
+    Page<ProductDto> getProducts(@RequestParam(name = "category", required = false) ProductCategory category,
                                  Pageable pageable);
 
     @PutMapping
