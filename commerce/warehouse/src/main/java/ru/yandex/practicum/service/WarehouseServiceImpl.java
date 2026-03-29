@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.api.ShoppingStoreOperations;
 import ru.yandex.practicum.dto.shoppingCart.ShoppingCartDto;
-import ru.yandex.practicum.dto.shoppingStore.ProductDto;
-import ru.yandex.practicum.dto.shoppingStore.QuantityState;
+//import ru.yandex.practicum.dto.shoppingStore.ProductDto;
+//import ru.yandex.practicum.dto.shoppingStore.QuantityState;
 import ru.yandex.practicum.dto.warehouse.AddProductToWarehouseRequest;
 import ru.yandex.practicum.dto.warehouse.AddressDto;
 import ru.yandex.practicum.dto.warehouse.BookedProductsDto;
@@ -85,9 +85,9 @@ public class WarehouseServiceImpl implements WarehouseService {
         product.setQuantity(newQuantity);
         warehouseRepository.save(product);
 
-        ProductDto productDto = shoppingStoreClient.getProduct(product.getProductId());
-        QuantityState quantityState = QuantityState.fromQuantity(newQuantity);
-        shoppingStoreClient.setProductQuantityState(product.getProductId(), quantityState);
+//        ProductDto productDto = shoppingStoreClient.getProduct(product.getProductId());
+//        QuantityState quantityState = QuantityState.fromQuantity(newQuantity);
+//        shoppingStoreClient.setProductQuantityState(product.getProductId(), quantityState);
     }
 
     @Override
