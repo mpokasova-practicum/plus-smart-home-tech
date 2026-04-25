@@ -41,4 +41,3 @@ public class ErrorHandler {
         return new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e.getMessage());
     }
 }
-
