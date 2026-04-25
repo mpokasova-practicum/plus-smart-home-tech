@@ -6,8 +6,8 @@ import lombok.Data;
 
 import java.util.UUID;
 
-@Data
 @AllArgsConstructor
+@Data
 public class SetProductQuantityStateRequest {
     @NotNull
     private UUID productId;

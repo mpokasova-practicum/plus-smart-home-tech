@@ -3,8 +3,8 @@ package ru.yandex.practicum.dto.warehouse;
 import lombok.Builder;
 import lombok.Data;
 
-@Data
 @Builder
+@Data
 public class AddressDto {
     private String country;
     private String city;
