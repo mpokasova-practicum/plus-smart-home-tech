@@ -3,7 +3,12 @@ package ru.yandex.practicum.api;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.yandex.practicum.dto.shoppingCart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.dto.shoppingCart.ShoppingCartDto;
 
@@ -21,13 +26,13 @@ public interface ShoppingCartOperations {
                                              @RequestBody Map<UUID, Integer> products);
 
     @DeleteMapping
-    void deactivateShoppingCart(@RequestParam(name = "username") @NotNull String username);
+    void deactivateCurrentShoppingCart(@RequestParam(name = "username") @NotNull String username);
 
     @PostMapping("/remove")
     ShoppingCartDto removeFromShoppingCart(@RequestParam(name = "username") @NotNull String username,
                                            @RequestBody List<UUID> products);
 
     @PostMapping("/change-quantity")
-    ShoppingCartDto changeQuantity(@RequestParam(name = "username") @NotNull String username,
-                                   @RequestBody @Valid ChangeProductQuantityRequest request);
+    ShoppingCartDto changeProductQuantity(@RequestParam(name = "username") @NotNull String username,
+                                          @RequestBody @Valid ChangeProductQuantityRequest request);
 }

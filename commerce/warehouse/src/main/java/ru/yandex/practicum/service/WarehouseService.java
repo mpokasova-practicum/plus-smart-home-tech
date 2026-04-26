@@ -7,11 +7,11 @@ import ru.yandex.practicum.dto.warehouse.BookedProductsDto;
 import ru.yandex.practicum.dto.warehouse.NewProductInWarehouseRequest;
 
 public interface WarehouseService {
-    void createProduct(NewProductInWarehouseRequest request);
+    void newProductInWarehouse(NewProductInWarehouseRequest request);
 
-    BookedProductsDto checkProductQuantity(ShoppingCartDto cartDto);
+    BookedProductsDto checkProductQuantityEnoughForShoppingCart(ShoppingCartDto cartDto);
 
-    void addProduct(AddProductToWarehouseRequest request);
+    void addProductToWarehouse(AddProductToWarehouseRequest request);
 
     AddressDto getWarehouseAddress();
 }

@@ -12,9 +12,9 @@ public interface ShoppingCartService {
 
     ShoppingCartDto addProductToShoppingCart(String username, Map<UUID, Integer> products);
 
-    void deactivateShoppingCart(String username);
+    void deactivateCurrentShoppingCart(String username);
 
     ShoppingCartDto removeFromShoppingCart(String username, List<UUID> products);
 
-    ShoppingCartDto changeQuantity(String username, ChangeProductQuantityRequest request);
+    ShoppingCartDto changeProductQuantity(String username, ChangeProductQuantityRequest request);
 }

@@ -1,7 +1,10 @@
 package ru.yandex.practicum.dto.shoppingStore;
 
 public enum QuantityState {
-    ENDED, FEW, ENOUGH, MANY;
+    ENDED,
+    FEW,
+    ENOUGH,
+    MANY;
 
     public static QuantityState fromQuantity(Integer quantity) {
         if (quantity == null) {
