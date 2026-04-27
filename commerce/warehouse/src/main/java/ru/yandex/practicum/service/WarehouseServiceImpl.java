@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.api.ShoppingStoreOperations;
 import ru.yandex.practicum.dto.shoppingCart.ShoppingCartDto;
-import ru.yandex.practicum.dto.shoppingStore.ProductDto;
 import ru.yandex.practicum.dto.shoppingStore.QuantityState;
 import ru.yandex.practicum.dto.warehouse.AddProductToWarehouseRequest;
 import ru.yandex.practicum.dto.warehouse.AddressDto;
@@ -94,11 +93,8 @@ public class WarehouseServiceImpl implements WarehouseService {
         warehouseRepository.save(product);
         log.info("Приняли товар на склад");
 
-        log.info("Проверяем, есть ли товар в магазине");
-        ProductDto productDto;
+        QuantityState quantityState = QuantityState.fromQuantity(newQuantity);
         try {
-            productDto = shoppingStoreClient.getProduct(product.getProductId());
-            QuantityState quantityState = QuantityState.fromQuantity(newQuantity);
             log.info("Обновляем количество товара в магазине");
             shoppingStoreClient.setProductQuantityState(product.getProductId(), quantityState);
             log.info("Обновили количество товара в магазине");

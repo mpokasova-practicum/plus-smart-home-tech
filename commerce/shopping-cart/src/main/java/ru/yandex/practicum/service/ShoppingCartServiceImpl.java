@@ -15,6 +15,7 @@ import ru.yandex.practicum.mapper.CartMapper;
 import ru.yandex.practicum.model.ShoppingCart;
 import ru.yandex.practicum.repository.CartRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -80,13 +81,21 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart cart = getOrCreateShoppingCart(username);
         checkCartIsActive(cart);
         Map<UUID, Integer> oldProducts = cart.getProducts();
+
+        List<UUID> missingProducts = new ArrayList<>();
         for (UUID idToRemove : products) {
             if (oldProducts.containsKey(idToRemove)) {
                 oldProducts.remove(idToRemove);
             } else {
-                throw new NoProductsInShoppingCartException("Такого продукта нет в корзине");
+                missingProducts.add(idToRemove);
             }
         }
+        if (!missingProducts.isEmpty()) {
+            throw new NoProductsInShoppingCartException(
+                    String.format("Продукты не найдены в корзине: %s", missingProducts)
+            );
+        }
+
         cart.setProducts(oldProducts);
         log.info("Удалили продукты из корзины");
         cartRepository.save(cart);
