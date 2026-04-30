@@ -20,3 +20,13 @@ spring:
       hibernate:
         default_schema: delivery
         format_sql: true
+
+delivery:
+  calculator:
+    base-rate: 5.0
+    warehouse1-address-multiplier: 1
+    warehouse2-address-multiplier: 2
+    fragile-multiplier: 0.2
+    weight-multiplier: 0.3
+    volume-multiplier: 0.2
+    street-multiplier: 0.2

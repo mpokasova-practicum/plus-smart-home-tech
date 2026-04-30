@@ -133,9 +133,10 @@ public class OrderServiceImpl implements OrderService {
         log.info("Обрабатываем успешный платеж по заказу OrderId: {}", orderId);
 
         Order orderToPay = getOrderById(orderId);
-        orderToPay = changeOrderStateAndSave(orderToPay, OrderState.PAID);
 
         warehouseClient.assemblyProductsForOrder(new AssemblyProductsForOrderRequest(orderToPay.getProducts(), orderId));
+
+        orderToPay = changeOrderStateAndSave(orderToPay, OrderState.PAID);
 
         return orderMapper.toOrderDto(orderToPay);
     }

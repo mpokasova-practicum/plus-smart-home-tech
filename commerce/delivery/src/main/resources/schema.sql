@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS delivery.addresses (
 
 CREATE TABLE IF NOT EXISTS delivery.deliveries (
     delivery_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    from_address_id UUID NOT NULL REFERENCES delivery.addresses(address_id) ON DELETE CASCADE,
-    to_address_id UUID NOT NULL REFERENCES delivery.addresses(address_id) ON DELETE CASCADE,
+    from_address_id UUID NOT NULL REFERENCES delivery.addresses(address_id),
+    to_address_id UUID NOT NULL REFERENCES delivery.addresses(address_id),
     order_id UUID NOT NULL,
     delivery_state VARCHAR(10)
 );

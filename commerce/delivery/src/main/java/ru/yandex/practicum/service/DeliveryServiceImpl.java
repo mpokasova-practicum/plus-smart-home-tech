@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.api.OrderOperations;
 import ru.yandex.practicum.api.WarehouseOperations;
+import ru.yandex.practicum.config.DeliveryCostProperties;
 import ru.yandex.practicum.dto.delivery.DeliveryDto;
 import ru.yandex.practicum.dto.delivery.DeliveryState;
 import ru.yandex.practicum.dto.order.OrderDto;
@@ -28,14 +29,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     private final DeliveryMapper deliveryMapper;
     private final WarehouseOperations warehouseClient;
     private final OrderOperations orderClient;
-
-    private static final BigDecimal BASE_RATE = BigDecimal.valueOf(5.0);
-    private static final BigDecimal WAREHOUSE_1_ADDRESS_MULTIPLIER = BigDecimal.valueOf(1);
-    private static final BigDecimal WAREHOUSE_2_ADDRESS_MULTIPLIER = BigDecimal.valueOf(2);
-    private static final BigDecimal FRAGILE_MULTIPLIER = BigDecimal.valueOf(0.2);
-    private static final BigDecimal WEIGHT_MULTIPLIER = BigDecimal.valueOf(0.3);
-    private static final BigDecimal VOLUME_MULTIPLIER = BigDecimal.valueOf(0.2);
-    private static final BigDecimal STREET_MULTIPLIER = BigDecimal.valueOf(0.2);
+    private final DeliveryCostProperties costProperties;
 
     @Override
     public DeliveryDto planDelivery(DeliveryDto deliveryDto) {
@@ -54,15 +48,15 @@ public class DeliveryServiceImpl implements DeliveryService {
                         ("Такой доставки не найдено: deliveryId = " + orderDto.getDeliveryId()));
         Address warehouseAddress = delivery.getFromAddress();
         Address destinationAddress = delivery.getToAddress();
-        BigDecimal totalCost = BASE_RATE;
+        BigDecimal totalCost = costProperties.getBaseRate();
         totalCost = warehouseAddress.getCity().equals("ADDRESS_1") ?
-                totalCost.add(totalCost.multiply(WAREHOUSE_1_ADDRESS_MULTIPLIER)) :
-                totalCost.add(totalCost.multiply(WAREHOUSE_2_ADDRESS_MULTIPLIER));
-        totalCost = orderDto.getFragile() == true ? totalCost.add(totalCost.multiply(FRAGILE_MULTIPLIER)) : totalCost;
-        totalCost = totalCost.add(BigDecimal.valueOf(orderDto.getDeliveryWeight()).multiply(WEIGHT_MULTIPLIER));
-        totalCost = totalCost.add(BigDecimal.valueOf(orderDto.getDeliveryVolume()).multiply(VOLUME_MULTIPLIER));
+                totalCost.add(totalCost.multiply(costProperties.getWarehouse1AddressMultiplier())) :
+                totalCost.add(totalCost.multiply(costProperties.getWarehouse2AddressMultiplier()));
+        totalCost = orderDto.getFragile() == true ? totalCost.add(totalCost.multiply(costProperties.getFragileMultiplier())) : totalCost;
+        totalCost = totalCost.add(BigDecimal.valueOf(orderDto.getDeliveryWeight()).multiply(costProperties.getWeightMultiplier()));
+        totalCost = totalCost.add(BigDecimal.valueOf(orderDto.getDeliveryVolume()).multiply(costProperties.getVolumeMultiplier()));
         totalCost = warehouseAddress.getStreet().equals(destinationAddress.getStreet()) ?
-                totalCost : totalCost.add(totalCost.multiply(STREET_MULTIPLIER));
+                totalCost : totalCost.add(totalCost.multiply(costProperties.getStreetMultiplier()));
         log.info("Возвращаем стоимость доставки: {}", totalCost);
         return totalCost;
     }
@@ -94,7 +88,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     public void deliveryFailed(UUID orderId) {
-        log.info("Проставить признак успешной доставки товара: orderId={}", orderId);
+        log.info("Проставить признак неуспешной доставки товара: orderId={}", orderId);
         Delivery delivery = deliveryRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new NoDeliveryFoundException
                         ("Доставки для такого заказа не найдено: orderId = " + orderId));
