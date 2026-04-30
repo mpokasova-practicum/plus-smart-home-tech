@@ -9,6 +9,7 @@ import ru.yandex.practicum.dto.shoppingCart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.dto.shoppingCart.ShoppingCartDto;
 import ru.yandex.practicum.dto.warehouse.BookedProductsDto;
 import ru.yandex.practicum.exception.DeactivateCartException;
+import ru.yandex.practicum.exception.NoCartException;
 import ru.yandex.practicum.exception.NoProductsInShoppingCartException;
 import ru.yandex.practicum.exception.NotAuthorizedUserException;
 import ru.yandex.practicum.mapper.CartMapper;
@@ -81,7 +82,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart cart = getOrCreateShoppingCart(username);
         checkCartIsActive(cart);
         Map<UUID, Integer> oldProducts = cart.getProducts();
-
         List<UUID> missingProducts = new ArrayList<>();
         for (UUID idToRemove : products) {
             if (oldProducts.containsKey(idToRemove)) {
@@ -95,7 +95,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                     String.format("Продукты не найдены в корзине: %s", missingProducts)
             );
         }
-
         cart.setProducts(oldProducts);
         log.info("Удалили продукты из корзины");
         cartRepository.save(cart);
@@ -148,5 +147,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if(!cart.getActive()) {
             throw new DeactivateCartException("Корзина пользователя " + cart.getUsername() + " не активна");
         }
+    }
+
+    @Override
+    public String getUsernameById(UUID cartId) {
+        ShoppingCart shoppingCart = cartRepository.findByCartId(cartId)
+                .orElseThrow(() -> new NoCartException("Корзина с таким ID не существует: {}" + cartId));
+        return shoppingCart.getUsername();
     }
 }

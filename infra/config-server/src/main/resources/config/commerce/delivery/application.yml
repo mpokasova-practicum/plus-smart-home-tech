@@ -1,0 +1,32 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: delivery
+  sql:
+    init:
+      mode: always
+  datasource:
+    driverClassName: "org.postgresql.Driver"
+    url: "jdbc:postgresql://localhost:5432/smarthome"
+    username: "postgres"
+    password: "12345"
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        default_schema: delivery
+        format_sql: true
+
+delivery:
+  calculator:
+    base-rate: 5.0
+    warehouse1-address-multiplier: 1
+    warehouse2-address-multiplier: 2
+    fragile-multiplier: 0.2
+    weight-multiplier: 0.3
+    volume-multiplier: 0.2
+    street-multiplier: 0.2
