@@ -89,13 +89,10 @@ public class WarehouseServiceImpl implements WarehouseService {
         warehouseRepository.save(product);
         log.info("Приняли товар на склад");
 
-        log.info("Проверяем, есть ли товар в магазине");
-        ProductDto productDto;
+        QuantityState quantityState = QuantityState.fromQuantity(newQuantity);
         try {
-            productDto = shoppingStoreClient.getProduct(product.getProductId());
-            QuantityState quantityState = QuantityState.fromQuantity(newQuantity);
             log.info("Обновляем количество товара в магазине");
-            shoppingStoreClient.setProductQuantityState(productDto.getProductId(), quantityState);
+            shoppingStoreClient.setProductQuantityState(product.getProductId(), quantityState);
             log.info("Обновили количество товара в магазине");
         } catch (RuntimeException e) {
             log.info("Такого товара нет в магазине");
